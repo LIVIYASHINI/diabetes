@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 
 # Load the saved model
-diabetes_model = pickle.load(open('C:/Users/EndUser/Diabetes Prediction/diabetes_decision_tree_model.sav', 'rb'))
+diabetes_model = pickle.load(open('diabetes_decision_tree_model.sav', 'rb'))
 
 # Function to predict diabetes
 def predict_diabetes(data):
