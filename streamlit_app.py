@@ -7,15 +7,14 @@ Created on Tue Jun  4 17:17:00 2024
 
 import pickle
 import streamlit as st
-from streamlit_option_menu import option_menu
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
 
 # Load the saved model
 diabetes_model = pickle.load(open('C:/Users/EndUser/Diabetes Prediction/diabetes_decision_tree_model.sav', 'rb'))
 
-# Define function to predict diabetes
+# Function to predict diabetes
 def predict_diabetes(data):
     prediction = diabetes_model.predict(data)
     return prediction
@@ -23,7 +22,7 @@ def predict_diabetes(data):
 # Streamlit app layout
 st.set_page_config(page_title="Diabetes Prediction", page_icon="🌟", layout="wide")
 
-# Title and sidebar
+# Title
 st.title('Diabetes Prediction Web App')
 
 # Initialize session state for storing patient data and prediction count
@@ -33,14 +32,14 @@ if 'patient_data' not in st.session_state:
 if 'diabetes_count' not in st.session_state:
     st.session_state.diabetes_count = 0
 
-with st.sidebar:
-    selected = option_menu('Healthcare Prediction',
-                           ['Diabetes Prediction', 'Visualizations'],
-                           icons=['activity', 'graph-up'],
-                           default_index=0)
+# Sidebar Navigation
+menu = st.sidebar.radio(
+    "Select an option",
+    ['Diabetes Prediction', 'Visualizations']
+)
 
 # Diabetes Prediction Page
-if selected == 'Diabetes Prediction':
+if menu == 'Diabetes Prediction':
     st.subheader('Enter Patient Details')
 
     # Input fields
@@ -81,7 +80,7 @@ if selected == 'Diabetes Prediction':
             st.success('Diabetes prediction: Positive', icon="✅")
             st.session_state.diabetes_count += 1
         else:
-            st.success('Diabetes prediction: Negative', icon="❌")
+            st.error('Diabetes prediction: Negative', icon="❌")
 
         # Real-Time Update: Display the current count of diabetes predictions
         st.session_state.diabetes_display = st.empty()
@@ -90,11 +89,13 @@ if selected == 'Diabetes Prediction':
     # About Section
     st.write('---')
     st.subheader('About this app:')
-    st.write("This app predicts whether a patient has diabetes based on their medical data. "
-             "Enter the details above and click 'Predict' to see the result.")
+    st.write(
+        "This app predicts whether a patient has diabetes based on their medical data. "
+        "Enter the details above and click 'Predict' to see the result."
+    )
 
 # Visualizations Page
-if selected == 'Visualizations':
+if menu == 'Visualizations':
     st.subheader('Visualizations')
 
     # Sidebar Options for Visualizations
@@ -104,12 +105,13 @@ if selected == 'Visualizations':
         st.subheader('Patient Data Overview')
         # Extract data from session state
         patient_data = st.session_state.patient_data
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(10, 5))
         ax.bar(['Age', 'BMI', 'HbA1c Level', 'Blood Glucose Level'],
                [patient_data['age'], patient_data['bmi'], patient_data['HbA1c_level'], patient_data['blood_glucose_level']],
                color=['#69b3a2', '#404080', '#ff9999', '#66b3ff'])
         ax.set_ylabel('Values')
         ax.set_title('Patient Data Overview')
+        plt.xticks(rotation=45)
         st.pyplot(fig)
 
     elif viz_option == 'Data Distribution':
@@ -129,6 +131,7 @@ if selected == 'Visualizations':
         ax[1].set_xlabel('Blood Glucose Level')
         ax[1].set_ylabel('Frequency')
 
+        plt.tight_layout()
         st.pyplot(fig)
 
 # CSS Styling for a better look
@@ -152,19 +155,7 @@ st.markdown("""
     .stButton > button:hover {
         background-color: #45a049;
     }
-    .stSelectbox > div {
-        background-color: #ffffff;
-        border-radius: 5px;
-        padding: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    .stTextInput > div {
-        background-color: #ffffff;
-        border-radius: 5px;
-        padding: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    .stTextArea > div {
+    .stSelectbox > div, .stTextInput > div, .stRadio > div {
         background-color: #ffffff;
         border-radius: 5px;
         padding: 10px;
@@ -183,18 +174,6 @@ st.markdown("""
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     .stRadio > div {
-        background-color: #ffffff;
-        border-radius: 5px;
-        padding: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    .stSelectbox > div {
-        background-color: #ffffff;
-        border-radius: 5px;
-        padding: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    .stTextInput > div {
         background-color: #ffffff;
         border-radius: 5px;
         padding: 10px;
