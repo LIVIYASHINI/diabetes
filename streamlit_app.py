@@ -5,6 +5,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 
+# Function to load the model
+def load_model(model_path):
+    try:
+        with open(model_path, 'rb') as file:
+            model = pickle.load(file)
+        return model
+    except FileNotFoundError as e:
+        st.error(f"Model file not found: {e}")
+        return None
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
+        return None
+
 # Load the saved model
 model_path = 'diabetes_model.sav'
 with open(model_path, 'rb') as file:
