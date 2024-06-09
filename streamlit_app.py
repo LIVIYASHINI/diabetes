@@ -1,18 +1,14 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jun  4 17:17:00 2024
-
-@author: EndUser
-"""
-
 import pickle
 import streamlit as st
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 
 # Load the saved model
-diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
+model_path = 'diabetes_model.sav'
+with open(model_path, 'rb') as file:
+    diabetes_model = pickle.load(file)
 
 # Function to predict diabetes
 def predict_diabetes(data):
@@ -118,7 +114,7 @@ if menu == 'Visualizations':
         st.subheader('Data Distribution')
         patient_data = st.session_state.patient_data
         fig, ax = plt.subplots(1, 2, figsize=(14, 6))
-        
+
         # Age Distribution
         ax[0].hist([patient_data['age']], bins=10, color='#ffcc99', edgecolor='black')
         ax[0].set_title('Age Distribution')
