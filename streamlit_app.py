@@ -65,7 +65,7 @@ if menu == 'Diabetes Prediction':
 
     col3, col4 = st.columns(2)
     with col3:
-        HbA1c_level = st.number_input('HbA1c Level', min_value=0.0, max_value=20.0, step=0.1)
+        HbA1c_level = st.number_input('HbA1c Level (Average Blood Sugar Level)', min_value=0.0, max_value=20.0, step=0.1)
     with col4:
         blood_glucose_level = st.number_input('Blood Glucose Level', min_value=0, max_value=400, step=1)
 
@@ -77,7 +77,7 @@ if menu == 'Diabetes Prediction':
         'heart_disease': heart_disease,
         'smoking_history': smoking_history,
         'bmi': bmi,
-        'HbA1c_level, average blood sugar level': HbA1c_level,
+        'HbA1c_level': HbA1c_level,  # Updated key
         'blood_glucose_level': blood_glucose_level
     }
 
