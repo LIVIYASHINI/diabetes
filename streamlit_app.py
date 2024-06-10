@@ -77,7 +77,7 @@ if menu == 'Diabetes Prediction':
         'heart_disease': heart_disease,
         'smoking_history': smoking_history,
         'bmi': bmi,
-        'HbA1c_level': HbA1c_level,
+        'HbA1c_level, average blood sugar level': HbA1c_level,
         'blood_glucose_level': blood_glucose_level
     }
 
